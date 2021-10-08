@@ -1,0 +1,23 @@
+version: '3'
+services:
+  docker-registry:
+    image: registry:2.7.1
+    container_name: docker_registry
+    env_file:
+      - ./.env
+    volumes:
+      - ./registry:/var/lib/registry
+      - ./auth:/auth
+    ports:
+      - '5000:5000'
+    restart: always
+  docker-registry-ui:
+    image: parabuzzle/craneoperator:latest
+    container_name: craneoperator
+    env_file:
+      - ./.env
+    ports:
+      - '8086:80'
+    restart: always
+    depends_on:
+      - docker-registry
